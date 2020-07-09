@@ -90,28 +90,42 @@ jQuery(document).ready(function($) {
     });
     if (ferror) return false;
     else var str = $(this).serialize();
-    var action = $(this).attr('action');
-    if( ! action ) {
-      action = 'contactform/contactform.php';
+    // var action = $(this).attr('action');
+    // if( ! action ) {
+    //   action = 'contactform/contactform.php';
+    // }
+    let formData = $("#myForm").serializeArray();
+    let jsonData = {};
+    for(let i=0;i<4;i++){
+      let object = formData[i];
+      jsonData[object["name"]]=object["value"];
     }
     $.ajax({
       type: "POST",
-      url: action,
-      data: str,
-      success: function(msg) {
-        // alert(msg);
-        if (msg == 'OK') {
-          $("#sendmessage").addClass("show");
-          $("#errormessage").removeClass("show");
-          $('.contactForm').find("input, textarea").val("");
-        } else {
-          $("#sendmessage").removeClass("show");
-          $("#errormessage").addClass("show");
-          $('#errormessage').html(msg);
-        }
-
-      }
+      url: "https://apolion.games:9090/contact",
+      data: JSON.stringify(jsonData),
+      success: function(){},
+      dataType: "json",
+      contentType : "application/json"
     });
+    // $.ajax({
+    //   type: "POST",
+    //   url: action,
+    //   data: str,
+    //   success: function(msg) {
+    //     // alert(msg);
+    //     if (msg == 'OK') {
+    //       $("#sendmessage").addClass("show");
+    //       $("#errormessage").removeClass("show");
+    //       $('.contactForm').find("input, textarea").val("");
+    //     } else {
+    //       $("#sendmessage").removeClass("show");
+    //       $("#errormessage").addClass("show");
+    //       $('#errormessage').html(msg);
+    //     }
+
+    //   }
+    // });
     return false;
   });
 

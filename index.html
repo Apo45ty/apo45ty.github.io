@@ -330,25 +330,6 @@
   </footer>
 
 
-  <script type="text/javascript">
-    function submitform(){
-      let formData = $("#myForm").serializeArray();
-      let jsonData = {};
-      for(let i=0;i<4;i++){
-        let object = formData[i];
-        jsonData[object["name"]]=object["value"];
-      }
-      $.ajax({
-        type: "POST",
-        url: "https://apolion.games:9090/contact",
-        data: JSON.stringify(jsonData),
-        success: function(){},
-        dataType: "json",
-        contentType : "application/json"
-      });
-    }
-  </script>
-
 
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
