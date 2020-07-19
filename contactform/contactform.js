@@ -13,11 +13,13 @@ jQuery(document).ready(function($) {
       var rule = i.attr('data-rule');
 
       //check for hidden values.
-      if ((i.attr('name') == "Lname" || i.attr('name') == "phone") && i.val() != '')
+      if ((i.attr('name') == "Lname" || i.attr('name') == "phone") )
       {
-        //if the values are filled then it means it's a bot trying to submit.
-        ferror = true;
-        // return false;
+        if(i.val()!=''){
+          ferror = true;
+          console.log('error');
+        } else 
+          return;
       }
 
       if (rule !== undefined) {
@@ -104,7 +106,7 @@ jQuery(document).ready(function($) {
     // }
     let formData = $("#myForm").serializeArray();
     let jsonData = {};
-    for(let i=0;i<4;i++){
+    for(let i=0;i<formData.length;i++){
       let object = formData[i];
       jsonData[object["name"]]=object["value"];
     }
