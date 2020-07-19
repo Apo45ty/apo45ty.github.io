@@ -12,6 +12,14 @@ jQuery(document).ready(function($) {
       var i = $(this); // current input
       var rule = i.attr('data-rule');
 
+      //check for hidden values.
+      if ((i.attr('name') == "Lname" || i.attr('name') == "phone") && i.val() != '')
+      {
+        //if the values are filled then it means it's a bot trying to submit.
+        ferror = true;
+        // return false;
+      }
+
       if (rule !== undefined) {
         var ierror = false; // error flag for current input
         var pos = rule.indexOf(':', 0);
@@ -100,6 +108,7 @@ jQuery(document).ready(function($) {
       let object = formData[i];
       jsonData[object["name"]]=object["value"];
     }
+    
     $.ajax({
       type: "POST",
       url: "https://apolion.games:9090/contact",

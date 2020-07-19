@@ -1302,6 +1302,11 @@ body.mobile-nav-active #mobile-nav-toggle i {
   background: #92d283;
 }
 
+ .stickySituation /*honey pot*/
+{
+  display: none;
+}
+
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
