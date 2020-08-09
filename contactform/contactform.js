@@ -108,10 +108,15 @@ jQuery(document).ready(function($) {
     let jsonData = {};
     for(let i=0;i<formData.length;i++){
       let object = formData[i];
-      jsonData[object["name"]]=object["value"];
+      if(object["name"]&&object["value"])
+        jsonData[object["name"]]=object["value"];
     }
-    
+    var captcharesponse = grecaptcha.getResponse();
+    console.log(captcharesponse);
     $.ajax({
+      headers:{
+        "g-recaptcha-response":captcharesponse
+      },
       type: "POST",
       url: "https://apolion.games:9090/contact",
       data: JSON.stringify(jsonData),
