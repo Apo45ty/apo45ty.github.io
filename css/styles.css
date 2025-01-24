@@ -22,6 +22,7 @@
   top: 20%;
   bottom: 20%;
   background-color: gray;
+  overflow-x: scroll;
   overflow-y: scroll;
 }
 .modal #title{
@@ -93,7 +94,9 @@
   justify-content: center;
   justify-items: center;
   overflow-y: scroll;
+  overflow-x: scroll;
   flex-direction: column;
+  padding-top: 1px;
 }
 @keyframes fadeIn {
   0% { 
