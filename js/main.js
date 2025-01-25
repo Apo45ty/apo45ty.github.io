@@ -20,7 +20,7 @@ const experienceElements = [
         title:"Systems Engineer at Infosys Limited",
         location:"Aguadilla, Puerto Rico",
         date:"December 2018 - March 2021",
-        keyDetails:"Worked with Java and Python",
+        keyDetails:"Worked with C# and SQL server",
         summary:`<ul>
 <li>Utilized Microsoft SQL Manager Studio (Transact SQL) to validate tests and data.</li>
 <li>Work with the Agile methodology “Scrum”.</li>
@@ -32,7 +32,7 @@ const experienceElements = [
         title:"Software Developer Engineer in Test(SDET) at Revature",
         location:"Reston, Virginia",
         date:"April 2018 - August 2018",
-        keyDetails:"Worked with Java and Python",
+        keyDetails:"Worked with Java and Selenium",
         summary:`<ul>
 <li>Was trained in Testing frameworks such as Selenium, Cucumber and Jasmine.</li>
 <li>Designed and implemented a project with Spring boot backend and Angular 2 front-end, then I worked with AWS to host my applications.</li>
@@ -44,7 +44,7 @@ const experienceElements = [
         title:"Java Programming Teacher and Mentor at Croem",
         location:"Mayagüez, Puerto Rico",
         date:"January 2014 - May 2014",
-        keyDetails:"Worked with Java and Python",
+        keyDetails:"Worked with Java",
         summary:`<ul>
 <li>Served as teacher for the Java Programming Language course curriculum, sponsored by AGMUS.</li>
 <li>Mentored students on the final research presentations at Croem.</li>
@@ -55,7 +55,7 @@ const experienceElements = [
         title:"Teacher’s Aid for Advanced Programming at University of Puerto Rico RUM",
         location:"Mayagüez, Puerto Rico",
         date:"January 2014 - May 2014",
-        keyDetails:"Worked with Java and Python",
+        keyDetails:"Worked with Java",
         summary:`<ul>
 <li>Instruction of SDLC, QA code review and software architecture design.</li>
 <li>Course material and laboratories were taught in the Java programming language.</li>
@@ -87,6 +87,18 @@ const educationAndCert = [
     },
 ];
 const projects = [
+    {
+        title:"MENTORS CONNECT V2",
+        summary:`
+        <div class="feature-block">
+            <!-- <img src="img/svg/vector.svg" alt="img" class="img-fluid"> -->
+            <h4>Mentors Connect</h4>
+            <p>A UI for an social network where mentors and mentees can connect.</p>
+            <div  ><img style="width:100%;" src="img/Screenshot_20250125_122409_Expo Go.jpg" alt="img"></div>
+            <a href="https://github.com/Apo45ty/MentorPage" class="btn-get-started scrollto">View on github</a>
+          </div>
+`
+    },
     {
         title:"MENTORS CONNECT",
         summary:`
