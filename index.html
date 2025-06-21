@@ -5,98 +5,40 @@
 </head>
 <body style="height: 100%;width: 100%;">
   <div class="main">
-    <div class="name">
-      <p>Antonio A. Tapia Maldonado</p>
-    </div>
-    <div class="components">
-      <div id="main_modal" class="modal">
-        <script>
-          let onClose = function(){
-            let modal = document.getElementById("main_modal");
-            //Add animation to the closing modal
-            modal.classList.add('modalClose');
-            // modal.style.display = "none"
-
-          }
-        </script>
-        <div id="modal_body" >
-          <p id="title"></p>
-          <p id="date"></p>
-          <p id="location"></p>
-          <p id="keyDetails"></p>
-          <div id="summary"></div>
-          <a href="#" >
-            <p style="position: relative;left:45%; bottom: 0;font-size: calc(10px + 2vw);" onclick="onClose()">Close</p>
-          </a>
+    <div class="mainContainer">
+      <div class="content">
+        <div class="name">
+          <p>Antonio A. Tapia Maldonado</p>
         </div>
-      </div>
-      <div class="componentsrow">
-        <div class="componentContainer">
-          <div style="
-            display: flex;
-            flex: 1 1 auto;
-            align-items: center;
-            justify-content: center;
-            justify-items: center;
-            flex-direction: column;">
-            <p class="titles">
-              Experience
-            </p>
+        <div class="divisions">
+          <div id="experience" class="oval division">
+            <p>Experience</p>
           </div>
-          <div class="component">
-            <div class="innerComponent" id="Experience">
+          <div id="education" class="oval division">
+            <p>Education and Certifications</p>
+          </div>
+          <div id="projects" class="oval division">
+            <p>Projects</p>
+          </div>
+          <div id="skills" class="oval division">
+            <p>Skills</p>
+          </div>
+        </div>
+        <div class="scrollviewOfDetails">   
+          <div id="scrollviewOfDetailsId" class="content scrollviewOfDetailsClose">
+            <button id="scrollviewOfDetailsClose" class="close-btn">&times;Close</button>
+            <div id="scrollviewOfDetailsContent">
             </div>
           </div>
         </div>
-        <div class="componentContainer">
-          <div style="
-            display: flex;
-            flex: 1 1 auto;
-            align-items: center;
-            justify-content: center;
-            justify-items: center;
-            flex-direction: column;">
-            <p class="titles">Education and Certifications</p>
-          </div>
-          <div class="component">
-            <div class="innerComponent" id="Education and Certifications">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="componentsrow">
-        <div class="componentContainer">
-          <div style="
-            display: flex;
-            flex: 1 1 auto;
-            align-items: center;
-            justify-content: center;
-            justify-items: center;
-            flex-direction: column;">
-            <p class="titles">Projects</p>
-          </div>
-          <div class="component">
-            <div class="innerComponent" id="Projects">
-            </div>
-          </div>
-        </div>
-        <div class="componentContainer">
-          <div style="
-            display: flex;
-            flex: 1 1 auto;
-            align-items: center;
-            justify-content: center;
-            justify-items: center;
-            flex-direction: column;">
-            <p class="titles">Skills</p>
-          </div>
-          <div class="component">
-            <div class="innerComponent" id="Skills">
-            </div>
+        <div class="playButtonContainer" style="visibility: hidden">
+          <div class="playButton oval">
+            <p>Play</p>
           </div>
         </div>
       </div>
     </div>
+    <div class="components"></div>
   </div>
 <script src="js/main.js"></script>
 </body>

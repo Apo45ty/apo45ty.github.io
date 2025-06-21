@@ -1,3 +1,6 @@
+@font-face { font-family: arcade; src: url('../fonts/ka1.ttf'); } 
+@font-face { font-family: arcadePage; src: url('../fonts/ARCADEPI.TTF'); } 
+
 .main{
   /* background-color: #FF00FF; */
   position: fixed;
@@ -10,354 +13,177 @@
   left: 0;
   right: 0;
   bottom: 0;
+  font-family: arcadePage;
+  background-color: black;
 }
-.modal{
-  position:fixed;
-  z-index: 100;
-  display: none;
-  height: 60%;
-  width: 60%;
-  left: 20%;
-  right: 20%;
-  top: 20%;
-  bottom: 20%;
-  background-color: gray;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  animation: fadeInModal 1s;
-  z-index: 100;
+
+.mainContainer{
+display: flex;
+height: 100vh; /* Full viewport height */
+align-items: center; /* Vertically centers the items */
+justify-content: center; /* Horizontally centers the items */
 }
-.modalClose{
-  animation: fadeOutModal 1s forwards;
-  display: none;
-}
-.modal #title{
-  font-size: calc(10px + 2vw);
-  text-align: center;
-}
-.modal #date{
-  font-size: calc(10px + 1vw);
-  text-align: center;
-}
-.modal #location{
-  font-size: calc(10px + 1vw);
-  text-align: center;
-}
-.modal #keydetails{
-  font-size: calc(10px + 1vw);
-  text-align: left;
-}
-.modal #summary{
-  font-size: calc(10px + 1vw);
-  text-align: left;
-}
-.name{
-  /* background-color: #FF0000; */
+.mainContainer{
   display: flex;
-  flex: 1 1 auto;
-  align-items: center;
-  justify-content: center;
-  justify-items: center;
+  flex-direction: column;
+}
+.name {
+  font-family: arcade;
+  color: white;
+  flex: 1;
 }
 .name p {
   flex: 1 1 auto; 
   font-size: calc(10px + 2vw);
   text-align: center;
 }
-.titles {
-  flex: 1 1 auto; 
+
+.oval {
+  width: 200px; /* Adjust width */
+  height: 100px; /* Adjust height */
+  background-color: white; /* Set background color */
+  border-radius: 50%; /* Makes the div an oval */
+  display: inline-block; /* Ensures it behaves like a block element */
+}
+
+.divisions{
+  display: flex;
+  justify-content: space-between; /* Horizontal centering */
+  flex: 1;
+}
+
+.divisions .division{
+  display: flex;
+  justify-content:center; /* Horizontal centering */
+  align-items: center;
+  flex: 1;
+  
+}
+.divisions .division p{
+  text-align: center;
+  font-family: arcade;
+}
+.playButtonContainer{
+  display: flex;
+  flex: 1;
+  align-items: center; /* Vertically centers the items */
+  justify-content: center; /* Horizontally centers the items */
+}
+.playButton {
+  align-items: center; /* Vertically centers the items */
+  justify-content: center; /* Horizontally centers the items */
+  align-content: center;
+}
+.playButtonContainer p{
+  text-align: center;
+  font-family: arcade;
+}
+
+.oval:hover{
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 400%;
+  animation: rainbow 3s infinite;
+  margin: 0;
+}
+
+.name p:hover{
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow 3s linear infinite;
+}
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+.scrollviewOfDetails{
+  flex: 10;
+  height: auto;
+  align-items: center; /* Vertically centers the items */
+  justify-content: center; /* Horizontally centers the items */
+  align-content: center;
+}
+.scrollviewOfDetails .content{
+  position: relative;
+  display: flex;
+  background-color: white;
+  flex: 1;
+  align-items: center; /* Vertically centers the items */
+  justify-content: center; /* Horizontally centers the items */
+  align-content: center;
+  min-height: 30vh;
+  max-height: 40vh;
+  max-width: 65vw;
+  overflow-y: scroll;
+}
+.scrollviewOfDetails .content scrollviewOfDetailsContent{
+  flex: 1;
+  align-items: center; /* Vertically centers the items */
+  justify-content: center; /* Horizontally centers the items */
+  align-content: center;
+}
+.close-btn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: blue;
+}
+.close-btn:hover {
+  color: red;
+}
+.scrollviewOfDetailsClose{
+  animation: fadeOutModal 1s forwards;
+  visibility: hidden;
+}
+.scrollviewOfDetails #title{
   font-size: calc(10px + 2vw);
   text-align: center;
 }
-.components{
-  /* background-color: #0000FF; */
-  display: flex;
-  flex-direction: column;
-  flex: 10 1 auto;
-  overflow-y: scroll;
-  overflow-x: scroll;
+.scrollviewOfDetails #date{
+  font-size: calc(10px + 1vw);
+  text-align: center;
 }
-.componentsrow{
-  /* background-color: #0F00FF; */
-  display: flex;
-  flex-direction: row;
-  flex: 1 1 auto;
+.scrollviewOfDetails #location{
+  font-size: calc(10px + 1vw);
+  text-align: center;
 }
-@media screen and (max-width: 768px) {
-  .componentsrow{
-    /* background-color: #0F00FF; */
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-  }
+.scrollviewOfDetails #keydetails{
+  font-size: calc(10px + 1vw);
+  text-align: left;
 }
-
-.component{
-  /* background-color: #0F00FF; */
-  display: flex;
-  flex: 30 1 auto;
-  align-items: center;
-  justify-content: center;
-  justify-items: center;
-  padding-left: 3%;
-  padding-right: 3%;
-}
-.innerComponent{
-  /* background-color: #0F55FF; */
-  display: flex;
-  flex: 10 1 auto;
-  align-items: center;
-  justify-content: center;
-  justify-items: center;
-  overflow-y: scroll;
-  overflow-x: scroll;
-  flex-direction: column;
-  padding-top: 1px;
-}
-@keyframes fadeIn {
-  0% { 
-    opacity: 0; 
-    transform: scale(0);
-    z-index: -1;
-  }
-  100% { 
-    opacity: 1; 
-    color :black;
-    margin: -10px;
-    z-index: -1;
-  }
+.scrollviewOfDetails #summary{
+  font-size: calc(10px + 1vw);
+  text-align: left;
 }
 @keyframes fadeInModal {
   0% { 
     opacity: 0; 
     transform: scale(0);
+    background-color: transparent
   }
   100% { 
     opacity: 1; 
     color :black;
-    margin: -10px;
-  }
-}
-@keyframes fadeOut {
-  0% { 
-    opacity: 1; 
-    color :black;
-    background-color: red;
-  }
-  100% { 
-    transform: scale(0);
-    background-color: red;
+    background-color: white
   }
 }
 @keyframes fadeOutModal {
   0% { 
     opacity: 1; 
     color :black;
+    background-color: white
   }
   100% { 
     transform: scale(0);
     opacity: 0;
+    background-color: transparent
   }
-}
-@keyframes shrink {
-  0% { 
-    transform: scale(1);
-  }
-  100% { 
-    transform: scale(1);
-  }
-}
-.iconWithData{
-  flex: 1 1 auto;
-  display: grid;
-  border-radius: 20px;
-  padding-left: 3%;
-  padding-right: 3%;
-  padding-bottom: 3%;
-  
-}
-.iconWithDataDescription{
-  background-color: aqua;
-  border-radius: 20px;
-}
-.iconWithDataChild{
-  z-index: 1;
-  
-}
-.iconWithData .iconWithDataDescription, .iconWithData .iconWithDataChild {
-  grid-area: 1 / 1 / 2 / 2;
-}
-
-.iconWithData:hover .iconWithDataChild{
-  animation: fadeIn 1s forwards;
-  display: block;
-}
-.hoveredLeave{
-  animation: fadeOut 1s;
-}
-.shrinkBackDown{
-  animation: shrink 1s;
-}
-.componentContainer{
-  border-style: solid;
-  border-width: 1px;
-  border-color: black;
-  display: flex;
-  flex: 10 1 auto;
-  flex-direction: column;
-}
-@keyframes applyGrad {
-  0% { 
-    background-color: white;
-  }
-  20% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 0.2) 0%,
-    rgba(255, 126, 95, 0.0) 10%, 
-    rgba(254, 180, 123, 0.0) 90%, 
-    rgba(255, 126, 95,0.2) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 0.2) 0%,
-    rgba(255, 126, 95, 0.0) 10%, 
-    rgba(254, 180, 123, 0.0) 90%, 
-    rgba(117, 84, 76, 0.2) 100%);
-  }
-  40% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 0.4) 0%,
-    rgba(255, 126, 95, 0.0) 10%, 
-    rgba(254, 180, 123, 0.0) 90%, 
-    rgba(255, 126, 95,0.4) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 0.4) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(117, 84, 76, 0.4) 100%);
-  }
-  60% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 0.6) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(255, 126, 95,0.6) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 0.6) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(117, 84, 76,0.6) 100%);
-  }
-  80% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 0.8) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(255, 126, 95,0.8) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 0.8) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(117, 84, 76,0.8) 100%);
-  }
-  100% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 1) 0%,
-    rgba(255, 126, 95, 0.1) 10%, 
-    rgba(254, 180, 123, 0.1) 90%, 
-    rgba(255, 126, 95,1) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 1) 0%,
-    rgba(255, 126, 95, 0.1) 10%, 
-    rgba(254, 180, 123, 0.1) 90%, 
-    rgba(117, 84, 76,1) 100%);
-  }
-}
-
-
-@keyframes removeGrad {
-  0% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 1) 0%,
-    rgba(255, 126, 95, 0.1) 10%, 
-    rgba(254, 180, 123, 0.1) 90%, 
-    rgba(255, 126, 95,1) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 1) 0%,
-    rgba(255, 126, 95, 0.1) 10%, 
-    rgba(254, 180, 123, 0.1) 90%, 
-    rgba(117, 84, 76,1) 100%);
-  }
-
-  20% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 0.8) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(255, 126, 95,0.8) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 0.8) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(117, 84, 76,0.8) 100%);
-  }
-  40% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 0.6) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(255, 126, 95,0.6) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 0.6) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(117, 84, 76,0.6) 100%);
-  }
-
-  60% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 0.4) 0%,
-    rgba(255, 126, 95, 0.0) 10%, 
-    rgba(254, 180, 123, 0.0) 90%, 
-    rgba(255, 126, 95,0.4) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 0.4) 0%,
-    rgba(255, 126, 95, 0) 10%, 
-    rgba(254, 180, 123, 0) 90%, 
-    rgba(117, 84, 76, 0.4) 100%);
-  }
-  80% { 
-    background: linear-gradient(to right, 
-    rgba(255, 126, 95, 0.2) 0%,
-    rgba(255, 126, 95, 0.0) 10%, 
-    rgba(254, 180, 123, 0.0) 90%, 
-    rgba(255, 126, 95,0.2) 100%),
-    linear-gradient(to bottom, 
-    rgba(255, 126, 95, 0.2) 0%,
-    rgba(255, 126, 95, 0.0) 10%, 
-    rgba(254, 180, 123, 0.0) 90%, 
-    rgba(117, 84, 76, 0.2) 100%);
-  }
-
-  
-  100% { 
-    background-color: white;
-  }
-}
-.componentContainer:hover{
-  flex: 1 1 auto;
-  animation: applyGrad 0.3s;
-}
-.hoveredComponent{
-  background: linear-gradient(to right, 
-  rgba(255, 126, 95, 1) 0%,
-  rgba(255, 126, 95, 0.1) 10%, 
-  rgba(254, 180, 123, 0.1) 90%, 
-  rgba(255, 126, 95,1) 100%),
-  linear-gradient(to bottom, 
-  rgba(255, 126, 95, 1) 0%,
-  rgba(255, 126, 95, 0.1) 10%, 
-  rgba(254, 180, 123, 0.1) 90%, 
-  rgba(117, 84, 76,1) 100%);
-}
-.componentContainerRemoveAnim{
-  animation: removeGrad 0.3s;
 }

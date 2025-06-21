@@ -320,101 +320,28 @@ const skills = [
 
 window.onload = function() {
     console.log('Page has fully loaded');
-
-    const windowHeight = window.innerHeight;
-    const windowWidth = window.innerWidth;
-
-    // Get the stylesheet
-    const stylesheet = document.styleSheets[0];
-    for (let i = 0; i < stylesheet.cssRules.length; i++) {
-        if (stylesheet.cssRules[i].selectorText === '.innerComponent') {
-            let innerComponentMaxHeight = windowHeight * 0.333;
-            if (innerComponentMaxHeight<=100)
-                innerComponentMaxHeight = '100px'
-            else
-                innerComponentMaxHeight=""+innerComponentMaxHeight+"px"
-
-            stylesheet.cssRules[i].style.maxHeight = innerComponentMaxHeight
-
-            // let innerComponentMaxWidth = windowWidth * 0.45;
-            // if (innerComponentMaxWidth<=100)
-            //     innerComponentMaxWidth = '100px'
-            // else
-            //     innerComponentMaxWidtht=""+innerComponentMaxWidth+"px"
-
-            // stylesheet.cssRules[i].style.maxWidth = innerComponentMaxHeight
-        }
-    }
-    //Setup icons for experience quadrant
-    GenerateIcons(windowWidth, "Experience", experienceElements, ICON_MIN_WIDTH);
-    GenerateIcons(windowWidth, "Education and Certifications", educationAndCert, ICON_MIN_WIDTH)
-    GenerateIcons(windowWidth, "Projects", projects, ICON_MIN_WIDTH)
-    GenerateIcons(windowWidth, "Skills", skills, ICON_MIN_WIDTH)
-
-    //Add animation to quadrants
-    document.querySelectorAll(".componentContainer").forEach(function(item, index) {
-        item.addEventListener('mouseenter', function() {
-            item.classList.remove('componentContainerRemoveAnim');
-            item.classList.add("hoveredComponent");
-        })
-        item.addEventListener('mouseleave', function() {
-            item.classList.add('componentContainerRemoveAnim');
-            item.classList.remove("hoveredComponent");
-        })
-    });
-
-    
+    const close = document.getElementById('scrollviewOfDetailsClose')
+    close.addEventListener('mouseenter', function() {
+        document.getElementById('scrollviewOfDetailsId').classList.add('scrollviewOfDetailsClose');
+    })
+    setupData('experience', experienceElements)
+    setupData('education', educationAndCert)
+    setupData('projects', projects)
+    setupData('skills', skills)
 };
-
-function GenerateIcons(windowWidth, DOMID, elements, iconWidth) {
-    let html = '';
-    let numberOfColumns = Math.floor((windowWidth * 0.45) /iconWidth);
-    html = GenerateHTML(numberOfColumns,elements);
-    const expDOMElem = document.getElementById(DOMID);
-    expDOMElem.innerHTML = html;
-    const hoverBox = expDOMElem.querySelectorAll('.iconWithData');
-
-    hoverBox.forEach(function(item, index) {
-        const newChildElement = document.createElement('div');
-        newChildElement.style.zIndex = 1;
-        newChildElement.style.borderRadius = "20px";
-        newChildElement.style.backgroundColor = "red"
-        item.addEventListener('mouseenter', function() {
-
-            // Get the size of the element
-            const itemRect = item.getBoundingClientRect();
-            const itemWidth = itemRect.width;
-            const itemHeight = itemRect.height;
-
-            let child = item.querySelector('.iconWithDataChild');
-            child.classList.remove('hoveredLeave');
-            // child.innerHTML="<p>Click Me!</p>";
-            console.log("Entering for "+item)
-            // newChildElement.style.marginTop = itemHeight+"px";
-            newChildElement.innerHTML = "<div style='border-radius: 20px;display:block;height:"+itemHeight+"px"+"'></div><p style='text-align:center'>Click Me!</p>"
-            child.appendChild(newChildElement);
-            item.querySelector('.iconWithDataDescription').style.zIndex = 10
-            item.querySelector('.iconWithDataDescription').style.maxHeight = itemHeight
-            // item.querySelector('.iconWithDataDescription').style.backgroundColor = newChildElement.style.backgroundColor;
-
-        })
-        item.addEventListener('mouseleave', function() {
-            console.log("Exiting for "+item)
-            let child = item.querySelector('.iconWithDataChild');
-            child.innerHTML="";
-            child.classList.add('hoveredLeave');
-            item.classList.add('shrinkBackDown');
-            // item.querySelector('.iconWithDataDescription').style.backgroundColor = 'aqua'
-            // item.removeChild(newChildElement);
-            // item.parentElement.removeChild();
-        })
-        item.addEventListener('click', function() {
-            let modal = document.getElementById("main_modal");
-            modal.classList.remove('modalClose')
-            modal.style.display = "block";
-            let elel = modal.querySelector("#modal_body");
+function setupData(idOfSelector, elements){
+    const item = document.getElementById(idOfSelector)
+    item.addEventListener('mouseenter', function() {
+        let modal = document.getElementById("scrollviewOfDetailsId");
+        modal.classList.remove('scrollviewOfDetailsClose')
+        modal.style.display = "block";
+        const stringInnerHTMLForElement = '<div id="scrollviewOfDetailsContent"><hr style="height:2px;border-width:0;color:gray;background-color:gray"/><p id="title"></p><p id="date"></p><p id="location"></p><p id="keyDetails"></p><div id="summary"></div></div>'
+        const contentElement = modal.querySelector('#scrollviewOfDetailsContent');
+        contentElement.innerHTML = "";
+        for(let index =0;elements.length;index++){
+            let elel = htmlToNode(stringInnerHTMLForElement);
             if(elements[index].title)
-                elel.querySelector("#title").innerHTML=elements[index].title;
+                elel.querySelector("#title").innerHTML=(index+1)+") "+elements[index].title;
             else
                 elel.querySelector("#title").innerHTML=""
 
@@ -437,28 +364,21 @@ function GenerateIcons(windowWidth, DOMID, elements, iconWidth) {
                 elel.querySelector("#summary").innerHTML="<p>Summary:</p><p><span style='display: inline-block; width: 2ch;''>&#9;</span>"+elements[index].summary+"</p>";
             else
                 elel.querySelector("#summary").innerHTML=""
-        });
-
+            contentElement.appendChild(elel);
+        }
     });
 }
-
-function GenerateHTML(numberOfColumns, elements) {
-    let html = "<div style='display: flex;flex-direction: row;flex: 1 1 auto;'>";
-    let currentColumn = 0;
-    for (let i = 0; i <  elements.length; i++) {
-        let expElem =  elements[i];
-        // console.log(i+","+Math.floor(i / numberOfColumns))
-        if (currentColumn < Math.floor(i / numberOfColumns)) {
-            currentColumn++;
-            if(currentColumn>0)
-                html += "</div><div style='display: flex;flex-direction: row;flex: 1 1 auto;justify-content: space-between;'>";
-        }
-        html += 
-        "<div class='iconWithData'>"+
-            "<div class='iconWithDataChild'></div>"+
-            "<div class='iconWithDataDescription'><p>" + expElem.title + "</p></div>"+
-        "</div>";
+function htmlToNode(html) {
+    const template = document.createElement('template');
+    template.innerHTML = html;
+    const nNodes = template.content.childNodes.length;
+    if (nNodes !== 1) {
+        throw new Error(
+            `html parameter must represent a single node; got ${nNodes}. ` +
+            'Note that leading or trailing spaces around an element in your ' +
+            'HTML, like " <img/> ", get parsed as text nodes neighbouring ' +
+            'the element; call .trim() on your input to avoid this.'
+        );
     }
-    html += "</div>";
-    return html;
+    return template.content.firstChild;
 }
