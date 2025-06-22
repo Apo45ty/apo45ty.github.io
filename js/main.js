@@ -419,10 +419,10 @@ window.onload = function() {
             });
 
             document.addEventListener('keydown', function(event) {
-                if (event.key == 'd') {
+                if (event.key == 'd'||event.key=='ArrowRight') {
                     player.playerx+=player.paddleSpeed;
                     player.playerx=Math.min(position.width+position.left-player.paddleWidth,player.playerx);
-                } else if (event.key == 'a') {
+                } else if (event.key == 'a'||event.key=='ArrowLeft') {
                     player.playerx-=player.paddleSpeed;
                     player.playerx=Math.max(position.left,player.playerx)
                 }
