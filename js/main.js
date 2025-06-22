@@ -317,9 +317,27 @@ const skills = [
         summary:`Deep Learning,Game Jams, Game Development, Competitive Programming, Simulations,Temporal, Kali Linux`
     },
 ];
-
+let player = {
+    playerx:0,playery:0,paddleWidth:200,paddleHeight:20,paddleSpeed:20, lives:10, isInvulnerable: false
+}
+let balls = []
+const ballSpeed = 10
+const ballRadis = 10
+const invulMilisecon = 500
+let paddleOffset=40
+const MinimumDragMovement=2
+let previousMouseX = null
+//Mouse dragcomp
+let isDragging = false;
+let dragStartX;
 window.onload = function() {
     console.log('Page has fully loaded');
+    
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+
+    paddleOffset=windowHeight*0.1
+    //Setup page resume data display
     const close = document.getElementById('scrollviewOfDetailsClose')
     close.addEventListener('mouseenter', function() {
         document.getElementById('scrollviewOfDetailsId').classList.add('scrollviewOfDetailsClose');
@@ -328,17 +346,206 @@ window.onload = function() {
     setupData('education', educationAndCert)
     setupData('projects', projects)
     setupData('skills', skills)
+
+    //Setup brick braker game
+    const playButton = document.getElementById('playButton')
+    playButton.addEventListener('mouseenter', async function() {
+        try{
+            
+            const mainDocument = document.querySelector(".main");
+            // Ensure all scrollable content is visible
+            playButton.style.visibility = "hidden";
+            let canvas = await html2canvas(mainDocument);
+            
+            // Select the element
+            const element = document.querySelector('.mainCont');
+            
+            // Get the position and dimensions
+            const rect = element.getBoundingClientRect();
+            
+            // Access the position in pixels
+            const position = {
+                top: rect.top,       // Distance from the top of the viewport
+                left: rect.left,     // Distance from the left of the viewport
+                bottom: rect.bottom, // Distance from the top to the bottom edge
+                right: rect.right,   // Distance from the left to the right edge
+                width: rect.width,   // Element's width
+                height: rect.height  // Element's height
+            }; 
+            const sourceCtx  = canvas.getContext('2d',{ willReadFrequently: true });
+            const rowHeight = 50;
+            const rowCount = Math.ceil(position.height / rowHeight) 
+            const columnWidth = 100;
+            const columnCount = Math.ceil(position.width / columnWidth) 
+            // document.addEventListener('click', function(event) {
+            //     const currMouseX = event.clientX; // X position relative to the viewport
+            //     let deltaX = 0;
+            //      if (previousMouseX !== null) {
+            //         deltaX = currMouseX - previousMouseX; // Calculate the delta (difference)
+            //         player.playerx+=deltaX
+            //         player.playerx=Math.max(position.left,player.playerx)
+            //         player.playerx=Math.min(position.width+position.left-player.paddleWidth,player.playerx);
+            //     } 
+            //     previousMouseX=currMouseX
+            // });
+
+            document.addEventListener('touchstart', (event) => {
+                const touch = event.touches[0];
+
+                isDragging = true;
+                dragStartX = touch.clientX;
+            });
+
+            document.addEventListener('touchmove', (event) => {
+                if (!isDragging) return;
+                const touch = event.touches[0];
+                let  dx = touch.clientX - dragStartX;
+                if(dx<0){
+                    dx=Math.min(MinimumDragMovement,Math.abs(dx))
+                    player.playerx-=dx 
+                    player.playerx=Math.max(position.left,player.playerx)
+                }
+                else{
+                    dx=Math.min(MinimumDragMovement,Math.abs(dx))
+                    player.playerx+=dx 
+                    player.playerx=Math.min(position.width+position.left-player.paddleWidth,player.playerx);
+                } 
+            });
+
+            document.addEventListener('touchend', () => {
+                if (isDragging) {
+                    isDragging = false;
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key == 'd') {
+                    player.playerx+=player.paddleSpeed;
+                    player.playerx=Math.min(position.width+position.left-player.paddleWidth,player.playerx);
+                } else if (event.key == 'a') {
+                    player.playerx-=player.paddleSpeed;
+                    player.playerx=Math.max(position.left,player.playerx)
+                }
+            });
+            const randomStart = (Math.random()*position.width)
+            player.playerx=position.left+randomStart;
+            player.playery=position.bottom-position.height-paddleOffset
+            balls.push({x:position.left+randomStart,y:position.bottom,dirrY:-1,dirrX:1, speed:ballSpeed,radis:ballRadis})
+            let imagesSegments = []
+            for(let rowInd=0;rowInd<rowCount;rowInd++){
+                for(let columnInd=0;columnInd<columnCount;columnInd++){
+                    let imageData = sourceCtx.getImageData(position.left+columnInd*columnWidth, position.top+rowInd*rowHeight, columnWidth, rowHeight);
+                    const data = imageData.data;
+
+                    // Modify the color (e.g., increase red, decrease blue)
+                    for (let i = 0; i < data.length; i += 4) {
+                        data[i] = Math.min(data[i] + 50, 255); // Red channel
+                        data[i + 1] = data[i + 1];             // Green channel (unchanged)
+                        data[i + 2] = Math.max(data[i + 2] - 50, 0); // Blue channel
+                        // data[i + 3] is the alpha channel (unchanged)
+                    }
+                    imagesSegments.push(imageData)
+                }
+            }  
+                
+            mainDocument.classList.add("mainClose")
+            const stringInnerHTMLForElement = '<canvas id="myCanvas" width="'+windowWidth+'" height="'+windowHeight+'"></canvas>'
+            let elel = htmlToNode(stringInnerHTMLForElement);
+            const targetCtx  = elel.getContext('2d',{ willReadFrequently: true });
+            elel.classList.add("mainCanvas")
+            document.body.appendChild(elel); // Appends the screenshot canvas to the page
+            canvas.style.display = "none";
+            document.body.appendChild(canvas); 
+            
+            const timeoutId = setInterval(() => {
+                //clearTimeout(timeoutId);
+                
+                targetCtx.clearRect(0,0, windowWidth,windowHeight);
+                
+                
+                //Draw platforms
+                for(let rowInd=0;rowInd<rowCount;rowInd++){
+                    for(let columnInd=0;columnInd<columnCount;columnInd++){
+                        if(imagesSegments[rowInd*columnCount+columnInd]!=null||imagesSegments[rowInd*columnCount+columnInd]!=undefined){
+                            targetCtx.putImageData(imagesSegments[rowInd*columnCount+columnInd], position.left+columnInd*columnWidth, position.top+rowInd*rowHeight);
+                            
+                        }
+                    }
+                }
+
+                for(let i=0;i<balls.length;i++){
+                   let ball = balls[i]
+                   ball.x += ball.dirrX*ball.speed
+                   if(ball.x<=position.left)
+                        ball.dirrX*=-1
+                   if(ball.x>=position.width+position.left)
+                        ball.dirrX*=-1
+                   ball.y += ball.dirrY*ball.speed
+                    if(ball.y<=0)
+                        ball.dirrY*=-1
+                    if(ball.y>=windowHeight&&!player.isInvulnerable){
+                        player.isInvulnerable=true
+                        ball.dirrY*=-1
+                        ball.dirrX*=-1
+                        setTimeout(
+                            ()=>{
+                                player.isInvulnerable=false
+                            },invulMilisecon
+                        );
+                        player.lives--
+                    }
+                    if(player.lives<=0)
+                        location.reload();
+                    if(isColliding(ball.x,ball.radis,ball.y,ball.radis,player.playerx, player.paddleWidth,windowHeight-player.playery,player.paddleHeight)!=null){
+                        ball.dirrY*=-1
+                        ball.dirrX*=-1
+                        if(Math.random()<0.13){
+                            balls.push({x:position.left+(Math.random()*position.width),y:position.bottom-(Math.random()*position.height),dirrY:-1,dirrX:(Math.random())>0.5?-1:1, speed:ballSpeed,radis:ballRadis})
+                        }
+                    }
+                    
+                    for(let rowInd=0;rowInd<rowCount;rowInd++){
+                        for(let columnInd=0;columnInd<columnCount;columnInd++){
+                            if((imagesSegments[rowInd*columnCount+columnInd]!=null||imagesSegments[rowInd*columnCount+columnInd]!=undefined
+                            )&&isColliding(ball.x,ball.radis,ball.y,ball.radis,position.left+columnInd*columnWidth, columnWidth, position.top+rowInd*rowHeight, rowHeight)
+                            ){
+                                imagesSegments[rowInd*columnCount+columnInd]=null;
+                                ball.dirrY*=-1
+                                ball.dirrX*=-1
+                            }
+                        }
+                    }
+                    targetCtx.fillStyle = 'yellow';
+                    targetCtx.fillRect(ball.x ,ball.y, ball.radis,ball.radis);
+                    
+                }
+
+                //Draw player
+                targetCtx.fillStyle = 'blue';
+                targetCtx.fillRect(player.playerx,windowHeight-player.playery, player.paddleWidth,player.paddleHeight);
+                
+                //Draw UI
+                for(let i=0;i<player.lives;i++)
+                    drawHeart(i*20+30, windowHeight-20, 20, 'red', targetCtx); 
+            }, 41.67);
+        } catch(e){
+            console.error(e.message);
+        }  
+    });
+        
 };
 function setupData(idOfSelector, elements){
-    const item = document.getElementById(idOfSelector)
-    item.addEventListener('mouseenter', function() {
-        let modal = document.getElementById("scrollviewOfDetailsId");
-        modal.classList.remove('scrollviewOfDetailsClose')
-        modal.style.display = "block";
-        const stringInnerHTMLForElement = '<div id="scrollviewOfDetailsContent"><hr style="height:2px;border-width:0;color:gray;background-color:gray"/><p id="title"></p><p id="date"></p><p id="location"></p><p id="keyDetails"></p><div id="summary"></div></div>'
+        const item = document.getElementById(idOfSelector)
+        item.addEventListener('mouseenter', function() {
+            let modal = document.getElementById("scrollviewOfDetailsId");
+            modal.classList.remove('scrollviewOfDetailsClose')
+            modal.style.display = "block";
+            const stringInnerHTMLForElement = '<div id="scrollviewOfDetailsContent"><hr style="height:2px;border-width:0;color:gray;background-color:gray"/><p id="title"></p><p id="date"></p><p id="location"></p><p id="keyDetails"></p><div id="summary"></div></div>'
         const contentElement = modal.querySelector('#scrollviewOfDetailsContent');
         contentElement.innerHTML = "";
-        for(let index =0;elements.length;index++){
+        for(let index =0;index<elements.length;index++){
+            if(!elements[index])
+                continue;
             let elel = htmlToNode(stringInnerHTMLForElement);
             if(elements[index].title)
                 elel.querySelector("#title").innerHTML=(index+1)+") "+elements[index].title;
@@ -381,4 +588,40 @@ function htmlToNode(html) {
         );
     }
     return template.content.firstChild;
+}
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+function isColliding(rect1x, rect1width, rect1y,rect1height , rect2x,rect2width,rect2y,rect2height) {
+  return collide(
+    {x:rect1x, w:rect1width, y:rect1y, h:rect1height},
+    {x:rect2x, w:rect2width, y:rect2y, h:rect2height}
+    )
+}
+function collide(r1,r2){
+    var dx=(r1.x+r1.w/2)-(r2.x+r2.w/2);
+    var dy=(r1.y+r1.h/2)-(r2.y+r2.h/2);
+    var width=(r1.w+r2.w)/2;
+    var height=(r1.h+r2.h)/2;
+    var crossWidth=width*dy;
+    var crossHeight=height*dx;
+    var collision=null;
+    //
+    if(Math.abs(dx)<=width && Math.abs(dy)<=height){
+        if(crossWidth>crossHeight){
+            collision=(crossWidth>(-crossHeight))?'bottom':'left';
+        }else{
+            collision=(crossWidth>-(crossHeight))?'right':'top';
+        }
+    }
+    return(collision);
+}
+function drawHeart(x, y, size, color, ctx) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+    ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
 }
