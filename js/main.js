@@ -69,7 +69,7 @@ const experienceElements = [
 const educationAndCert = [
     
     {
-        title:"Masters of Engineering in Computer Engineering (M.S.Cp.E)",
+        title:"Masters of Engineering in Computer Engineering (M.Eng.Cp.E)",
         location:"Polytechnic University of Puerto Rico, San Juan Campus",
         date:"November 2020 - Expected Graduation date of : March 2025",
         keyDetails:"GPA: 3.8/4.0",
